@@ -11,6 +11,8 @@ public class CandidateBuilder {
                 .lastName(candidate.getLastName())
                 .stack(candidate.getStack())
                 .yearsOfExperience(candidate.getYearsOfExperience())
+                .salary(candidate.getSalary())
+                .salaryExpectation(candidate.getSalaryExpectation())
                 .technicalDescription(candidate.getTechnicalDescription())
                 .build();
     }
