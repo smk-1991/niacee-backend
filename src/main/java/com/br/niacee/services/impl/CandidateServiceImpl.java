@@ -1,28 +1,27 @@
 package com.br.niacee.services.impl;
 
+import com.br.niacee.dto.CandidateDTO;
 import com.br.niacee.entities.Candidate;
+import com.br.niacee.helper.CandidateBuilder;
 import com.br.niacee.repository.CandidateRepository;
 import com.br.niacee.services.CandidateService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.br.niacee.helper.CandidateBuilder.candidateBuilder;
 
 @Service
+@RequiredArgsConstructor
 public class CandidateServiceImpl implements CandidateService {
 
-    private CandidateRepository candidateRepository;
-
-    @Autowired
-    public CandidateServiceImpl(CandidateRepository candidateRepository) {
-        this.candidateRepository = candidateRepository;
-    }
+    private final CandidateRepository candidateRepository;
 
     @Override
-    public void addCandidate(Candidate candidate) {
-        candidateRepository.save(candidateBuilder(candidate));
+    public void addCandidate(CandidateDTO candidateDTO) {
+        candidateRepository.save(candidateBuilder(candidateDTO));
     }
 
     @Override
@@ -31,7 +30,11 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public List<Candidate> findAllCandidates() {
-        return candidateRepository.findAll();
+    public List<CandidateDTO> findAllCandidates() {
+        List<Candidate> candidate = candidateRepository.findAll();
+
+        return candidate.stream()
+                .map(CandidateBuilder::candidateDTOBuilder)
+                .collect(Collectors.toList());
     }
 }

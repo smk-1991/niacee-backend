@@ -39,8 +39,10 @@ public class Candidate {
     @Column(name = "years_of_experience")
     private Integer yearsOfExperience;
 
+    @Column(name = "salary")
     private Integer salary;
 
+    @Column(name = "salary_expectation")
     private Integer salaryExpectation;
 
     @Column(name = "technical_description")

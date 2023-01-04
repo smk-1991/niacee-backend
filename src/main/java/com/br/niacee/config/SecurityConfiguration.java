@@ -1,13 +1,12 @@
 package com.br.niacee.config;
 
-import com.br.niacee.dto.JwtTokenFilter;
+import com.br.niacee.security.JwtTokenFilter;
 import com.br.niacee.services.JwtService;
 import com.br.niacee.services.impl.SecurityUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;

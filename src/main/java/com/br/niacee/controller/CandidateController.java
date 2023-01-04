@@ -1,5 +1,6 @@
 package com.br.niacee.controller;
 
+import com.br.niacee.dto.CandidateDTO;
 import com.br.niacee.entities.Candidate;
 import com.br.niacee.services.CandidateService;
 import lombok.RequiredArgsConstructor;
@@ -24,14 +25,14 @@ public class CandidateController {
 
 
     @PostMapping(value = "/createCandidate")
-    public ResponseEntity<Void> createCandidate(@RequestBody Candidate candidate){
-        candidateService.addCandidate(candidate);
+    public ResponseEntity<Void> createCandidate(@RequestBody CandidateDTO candidateDTO){
+        candidateService.addCandidate(candidateDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/findAllCandidates")
-    public ResponseEntity<List<Candidate>> findAllCandidates(){
-        List<Candidate> candidateList = candidateService.findAllCandidates();
+    public ResponseEntity<List<CandidateDTO>> findAllCandidates(){
+        List<CandidateDTO> candidateList = candidateService.findAllCandidates();
         return new ResponseEntity<>(candidateList, HttpStatus.OK);
     }
 
