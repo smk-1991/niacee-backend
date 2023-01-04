@@ -1,16 +1,13 @@
 package com.br.niacee.services;
-
-
-import com.br.niacee.entities.UserData;
-
-import java.util.Optional;
+import com.br.niacee.dto.TokenDTO;
+import com.br.niacee.dto.UserDTO;
 
 public interface UserService {
 
-	UserData autenticar(String cpf, String senha);
+	TokenDTO authenticate(UserDTO userDTO);
 	
-	UserData salvarUsuario(UserData userData);
+	void saveUser(UserDTO userDTO);
 	
-	void validarCpf(String cpf);
+	void cpfValidator(String cpf);
 	
 }

@@ -38,12 +38,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		
 		String authorization = request.getHeader("Authorization");
-		
-		//"Bearer","eyJhbGciOiJIUzUxMiJ9.eyJ..."
-		
-		if(authorization != null && authorization.startsWith("Bearer")) {
+
+		if(authorization != null) {
 			
-			String token = authorization.split(" ")[1];
+			String token = authorization;
 			boolean isTokenValid = jwtService.isTokenValido(token);
 			
 			if(isTokenValid) {
