@@ -24,13 +24,13 @@ public class CandidateController {
     private final CandidateService candidateService;
 
 
-    @PostMapping(value = "/createCandidate")
+    @PostMapping(value = "/create")
     public ResponseEntity<Void> createCandidate(@RequestBody CandidateDTO candidateDTO){
         candidateService.addCandidate(candidateDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/findAllCandidates")
+    @GetMapping(value = "/find")
     public ResponseEntity<List<CandidateDTO>> findAllCandidates(){
         List<CandidateDTO> candidateList = candidateService.findAllCandidates();
         return new ResponseEntity<>(candidateList, HttpStatus.OK);

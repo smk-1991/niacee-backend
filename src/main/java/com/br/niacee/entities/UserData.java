@@ -28,21 +28,15 @@ public class UserData {
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Long id;
 	
-	@Column(name = "nome")
-	private String nome;
+	@Column(name = "fullname")
+	private String fullName;
 
 	@Column(name = "email")
 	private String email;
 
-	@Column(name = "cpf")
-	private String cpf;
-
-	@Column(name = "telefone")
-	private String telefone;
-
-	@Column(name = "senha")
+	@Column(name = "password")
 	@JsonIgnore
-	private String senha;
+	private String password;
 
 
 }

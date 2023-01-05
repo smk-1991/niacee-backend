@@ -8,6 +8,6 @@ public interface UserService {
 	
 	void saveUser(UserDTO userDTO);
 	
-	void cpfValidator(String cpf);
+	void emailValidator(String cpf);
 	
 }

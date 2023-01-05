@@ -28,7 +28,7 @@ public class UserController {
         return new ResponseEntity<>(tokenDTO.getToken(), HttpStatus.OK);
     }
 
-    @PostMapping("/user")
+    @PostMapping("/save")
     public ResponseEntity<Void> save(@RequestBody UserDTO dto) {
         userService.saveUser(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);

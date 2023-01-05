@@ -6,13 +6,11 @@ import com.br.niacee.entities.UserData;
 public class UserBuilder {
 
     public static UserData userDataBuilder(UserDTO dto) {
-        UserData userData = UserData.builder()
-                .nome(dto.getNome())
+        return UserData.builder()
+                .fullName(dto.getFullName())
                 .email(dto.getEmail())
-                .cpf(dto.getCpf())
-                .telefone(dto.getTelefone())
-                .senha(dto.getSenha()).build();
-        return userData;
+                .password(dto.getPassword())
+                .build();
     }
 
 }

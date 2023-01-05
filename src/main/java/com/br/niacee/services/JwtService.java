@@ -9,9 +9,9 @@ public interface JwtService {
 
 	String gerarToken(UserData userData);
 	
-	Claims obterClaims(String token) throws ExpiredJwtException;
+	Claims getClaims(String token) throws ExpiredJwtException;
 	
 	boolean isTokenValido(String token);
 	
-	String obterLoginUsuario( String token );
+	String getUserLogin(String token );
 }

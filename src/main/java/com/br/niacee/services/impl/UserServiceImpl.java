@@ -4,7 +4,7 @@ import com.br.niacee.dto.TokenDTO;
 import com.br.niacee.dto.UserDTO;
 import com.br.niacee.entities.UserData;
 import com.br.niacee.exception.AuthenticationError;
-import com.br.niacee.exception.RegraNegocioException;
+import com.br.niacee.exception.BusinessRuleException;
 import com.br.niacee.repository.UserRepository;
 import com.br.niacee.services.JwtService;
 import com.br.niacee.services.UserService;
@@ -28,20 +28,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public TokenDTO authenticate(UserDTO userDTO) {
-        final String cpf = userDTO.getCpf();
-        final String password = userDTO.getSenha();
+        final String email = userDTO.getEmail();
+        final String password = userDTO.getPassword();
         TokenDTO tokenDTO = null;
 
-        UserData user = repository.findByCpf(cpf).orElseThrow(() -> new RuntimeException("User not found!"));
+        UserData user = repository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found!"));
 
         if (Objects.isNull(user)) {
             throw new AuthenticationError("User not found!");
         }
 
-        boolean passwordMatch = encoder.matches(password, user.getSenha());
+        boolean passwordMatch = encoder.matches(password, user.getPassword());
 
         if (!passwordMatch) {
-            throw new AuthenticationError("Invalid Password.");
+            throw new AuthenticationError("Invalid Password!");
         }
 
         return getTokenDTO(tokenDTO, user);
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     private TokenDTO getTokenDTO(TokenDTO tokenDTO, UserData user) {
         try {
             String token = jwtService.gerarToken(user);
-            tokenDTO = new TokenDTO(user.getNome(), token);
+            tokenDTO = new TokenDTO(user.getEmail(), token);
         } catch (AuthenticationError e) {
             e.getMessage();
         }
@@ -61,22 +61,22 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void saveUser(UserDTO userDTO) {
-        cpfValidator(userDTO.getCpf());
+        emailValidator(userDTO.getEmail());
         passwordCriptographer(userDTO);
         repository.save(userDataBuilder(userDTO));
     }
 
     private void passwordCriptographer(UserDTO userDTO) {
-        String password = userDTO.getSenha();
+        String password = userDTO.getPassword();
         String encryptedPassword = encoder.encode(password);
-        userDTO.setSenha(encryptedPassword);
+        userDTO.setPassword(encryptedPassword);
     }
 
     @Override
-    public void cpfValidator(String cpf) {
-        boolean exists = repository.existsByCpf(cpf);
+    public void emailValidator(String email) {
+        boolean exists = repository.existsByEmail(email);
         if (exists) {
-            throw new RegraNegocioException("There already is an user with this credential.");
+            throw new BusinessRuleException("There already is an user in the system with this credential.");
         }
 
     }

@@ -19,39 +19,38 @@ import java.util.Date;
 @Service
 public class JwtServiceImpl implements JwtService {
 	
-	@Value("${jwt.expiracao}")
-	private String expiracao;
+	@Value("${jwt.expiration}")
+	private String expiration;
 	
-	@Value("${jwt.chave-assinatura}")
-	private String chaveAssinatura;
+	@Value("${jwt.key-signature}")
+	private String keySignature;
 
 	@Override
 	public String gerarToken(UserData userData) {
-		long exp = Long.valueOf(expiracao);
-		LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(exp);
-		Instant instant = dataHoraExpiracao.atZone( ZoneId.systemDefault() ).toInstant();
+		long exp = Long.parseLong(expiration);
+		LocalDateTime expirationDateTime = LocalDateTime.now().plusMinutes(exp);
+		Instant instant = expirationDateTime.atZone( ZoneId.systemDefault() ).toInstant();
 		Date data = Date.from(instant);
 		
-		String horaExpiracaoToken = dataHoraExpiracao.toLocalTime()
+		String tokenExpiration = expirationDateTime.toLocalTime()
 				.format(DateTimeFormatter.ofPattern("HH:mm"));
-		
-		String token = Jwts
+
+		return Jwts
 							.builder()
 							.setExpiration(data)
-							.setSubject(userData.getCpf())
+							.setSubject(userData.getEmail())
 							.claim("userid", userData.getId())
-							.claim("nome", userData.getNome())
-							.claim("horaExpiracao", horaExpiracaoToken)
-							.signWith( SignatureAlgorithm.HS512 , chaveAssinatura )
+							.claim("name", userData.getFullName())
+							.claim("expirationTime", tokenExpiration)
+							.signWith( SignatureAlgorithm.HS512 , keySignature)
 							.compact();
-		return token;
 	}
 
 	@Override
-	public Claims obterClaims(String token) throws ExpiredJwtException {
+	public Claims getClaims(String token) throws ExpiredJwtException {
 		return Jwts
 				.parser()
-				.setSigningKey(chaveAssinatura)
+				.setSigningKey(keySignature)
 				.parseClaimsJws(token)
 				.getBody();
 	}
@@ -59,20 +58,20 @@ public class JwtServiceImpl implements JwtService {
 	@Override
 	public boolean isTokenValido(String token) {
 		try {
-			Claims claims = obterClaims(token);
+			Claims claims = getClaims(token);
 			Date dataEx = claims.getExpiration();
-			LocalDateTime dataExpiracao = dataEx.toInstant()
+			LocalDateTime expirationTime = dataEx.toInstant()
 					.atZone(ZoneId.systemDefault()).toLocalDateTime();
-			boolean dataHoraAtualIsAfterDataExpiracao = LocalDateTime.now().isAfter(dataExpiracao);
-			return !dataHoraAtualIsAfterDataExpiracao;
+			boolean expirationTimeAtualized = LocalDateTime.now().isAfter(expirationTime);
+			return !expirationTimeAtualized;
 		}catch(ExpiredJwtException e) {
 			return false;
 		}
 	}
 
 	@Override
-	public String obterLoginUsuario(String token) {
-		Claims claims = obterClaims(token);
+	public String getUserLogin(String token) {
+		Claims claims = getClaims(token);
 		return claims.getSubject();
 	}
 
