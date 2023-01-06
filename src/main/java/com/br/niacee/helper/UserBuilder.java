@@ -7,7 +7,6 @@ public class UserBuilder {
 
     public static UserData userDataBuilder(UserDTO dto) {
         return UserData.builder()
-                .fullName(dto.getFullName())
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .build();
