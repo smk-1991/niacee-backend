@@ -22,7 +22,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
 				.orElseThrow(() -> new UsernameNotFoundException("Email not signed up."));
 
 		return User.builder()
-				.username(userData.getFullName())
+				.username(userData.getEmail())
 				.password(userData.getPassword())
 				.roles("USER")
 				.build();

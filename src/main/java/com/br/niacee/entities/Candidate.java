@@ -45,6 +45,9 @@ public class Candidate {
     @Column(name = "salary_expectation")
     private Integer salaryExpectation;
 
+    @Column(name = "linkedin")
+    private String linkedin;
+
     @Column(name = "technical_description")
     private String technicalDescription;
 

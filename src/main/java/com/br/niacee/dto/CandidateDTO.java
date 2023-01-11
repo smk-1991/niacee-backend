@@ -11,12 +11,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CandidateDTO {
 
+    private Long id;
     private String firstName;
     private String lastName;
     private String stack;
     private Integer yearsOfExperience;
     private Integer salary;
     private Integer salaryExpectation;
+    private String linkedin;
     private String technicalDescription;
 
 }
